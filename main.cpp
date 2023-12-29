@@ -17,18 +17,20 @@ int main() {
 
     FiniteAutomaton fa(states, alphabet, transitions, finalStates, initialState);
 
-    while (true) {
-        std::cout << "Enter a string (or 'q' to quit): ";
+       while (attempts < 3) {
+        std::cout << "Enter a string ): ";
         std::string input;
         std::getline(std::cin, input);
-
-        if (input == "q") {
-            break;
-        }
 
         std::cout << "Result: ";
         bool result = fa.acceptsString(input);
         std::cout << (result ? "Accepted" : "Rejected") << std::endl;
+
+        attempts++;
+
+        if (attempts == 3) {
+            break;
+        }
     }
 
     return 0;
