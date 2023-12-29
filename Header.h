@@ -16,6 +16,7 @@ public:
 
     bool execute(std::vector<std::string> input) const;
 
+    bool acceptsString(const std::string& inputString) const;
 private:
     std::unordered_set<std::string> states_;
     std::unordered_set<std::string> alphabet_;
