@@ -32,3 +32,10 @@ bool FiniteAutomaton::execute(std::vector<std::string> input) const {
     }
     return finalStates_.count(currentState) != 0;
 }
+ bool acceptsString(const std::string& inputString) const {
+     std::vector<std::string> input;
+     for (char c : inputString) {
+         input.push_back(std::string(1, c));
+     }
+     return execute(input);
+ };
