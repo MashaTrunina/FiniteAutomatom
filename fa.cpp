@@ -1,5 +1,7 @@
 #include "Header.h"
 
+
+
 FiniteAutomaton::FiniteAutomaton(
     std::unordered_set<std::string> states,
     std::unordered_set<std::string> alphabet,
@@ -23,6 +25,9 @@ bool FiniteAutomaton::execute(std::vector<std::string> input) const {
                 transitionFound = true;
                 break;
             }
+        }
+        if (!transitionFound) {
+            return false;
         }
     }
     return finalStates_.count(currentState) != 0;
