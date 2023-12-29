@@ -1,0 +1,95 @@
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+#include <string>
+#include <iostream>
+#include <locale>
+
+// Structure for representing transitions
+struct Transition {
+    std::string currentState;
+    std::unordered_set<std::string> input;
+    std::string nextState;
+};
+
+class FiniteAutomaton {
+public:
+    FiniteAutomaton(
+        std::unordered_set<std::string> states,
+        std::unordered_set<std::string> alphabet,
+        std::vector<Transition> transitions,
+        std::unordered_set<std::string> finalStates,
+        std::string initialState)
+        : states_(states), alphabet_(alphabet),
+        transitions_(transitions), finalStates_(finalStates), initialState_(initialState) {}
+
+    bool execute(std::vector<std::string> input) const {
+        std::string currentState = initialState_;
+        for (std::string inputStr : input) {
+            if (alphabet_.count(inputStr) == 0) {
+                return false;
+            }
+            bool transitionFound = false;
+            for (const Transition& transition : transitions_) {
+                if (transition.currentState == currentState && transition.input.count(inputStr) != 0) {
+                    currentState = transition.nextState;
+                    transitionFound = true;
+                    break;
+                }
+            }
+            if (!transitionFound) {
+                return false;
+            }
+        }
+        return finalStates_.count(currentState) != 0;
+    }
+
+    bool acceptsString(const std::string& inputString) const {
+        std::vector<std::string> input;
+        for (char c : inputString) {
+            input.push_back(std::string(1, c));
+        }
+        return execute(input);
+    }
+
+private:
+    std::unordered_set<std::string> states_;
+    std::unordered_set<std::string> alphabet_;
+    std::vector<Transition> transitions_;
+    std::unordered_set<std::string> finalStates_;
+    std::string initialState_;
+};
+
+int main() {
+    std::unordered_set<std::string> states = { "1", "2", "3", "4" };
+    std::unordered_set<std::string> alphabet = { "a", "b" };
+    std::string initialState = "1";
+    std::unordered_set<std::string> finalStates = { "4" };
+    std::vector<Transition> transitions = {
+        { "1", { "a" }, "2" }, { "1", { "b" }, "4" },
+        { "2", { "a" }, "1" }, { "2", { "b" }, "3" },
+        { "3", { "a" }, "4" }, { "3", { "b" }, "2" },
+        { "4", { "a" }, "3" }, { "4", { "b" }, "1" },
+    };
+
+    FiniteAutomaton fa(states, alphabet, transitions, finalStates, initialState);
+ int attempts = 0;
+
+    while (attempts < 3) {
+        std::cout << "Enter a string ): ";
+        std::string input;
+        std::getline(std::cin, input);
+
+        std::cout << "Result: ";
+        bool result = fa.acceptsString(input);
+        std::cout << (result ? "Accepted" : "Rejected") << std::endl;
+
+        attempts++;
+
+        if (attempts == 3) {
+            break;
+        }
+    }
+
+    return 0;
+}
