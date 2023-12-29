@@ -3,13 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
-
-// Структура для представления переходов
-struct Transition {
-    std::string currentState;   // Текущее состояние
-    std::string input;         // Входной символ
-    std::string nextState;      // Следующее состояние
-};
+#include "Header1.h"
 
 class FiniteAutomaton {
 public:
