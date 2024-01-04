@@ -23,9 +23,9 @@ public:
         : states_(states), alphabet_(alphabet),
         transitions_(transitions), finalStates_(finalStates), initialState_(initialState) {}
 
-    bool execute(std::vector<std::string> input) const {
+    bool execute(const std::vector<std::string>& input) const {
         std::string currentState = initialState_;
-        for (std::string inputStr : input) {
+        for (const std::string& inputStr : input) {
             if (alphabet_.count(inputStr) == 0) {
                 return false;
             }
@@ -61,35 +61,25 @@ private:
 };
 
 int main() {
-    std::unordered_set<std::string> states = { "1", "2", "3", "4" };
+    std::unordered_set<std::string> states = { "1", "2", "3" };
     std::unordered_set<std::string> alphabet = { "a", "b" };
     std::string initialState = "1";
-    std::unordered_set<std::string> finalStates = { "4" };
+    std::unordered_set<std::string> finalStates = { "3" };
     std::vector<Transition> transitions = {
-        { "1", { "a" }, "2" }, { "1", { "b" }, "4" },
-        { "2", { "a" }, "1" }, { "2", { "b" }, "3" },
-        { "3", { "a" }, "4" }, { "3", { "b" }, "2" },
-        { "4", { "a" }, "3" }, { "4", { "b" }, "1" },
+        { "1", { "a" }, "2" },
+        { "2", { "b" }, "3" },
+        { "3", { "a" }, "2" },
     };
 
     FiniteAutomaton fa(states, alphabet, transitions, finalStates, initialState);
- int attempts = 0;
 
-    while (attempts < 3) {
-        std::cout << "Enter a string ): ";
-        std::string input;
-        std::getline(std::cin, input);
+    std::cout << "Enter a string: ";
+    std::string input;
+    std::getline(std::cin, input);
 
-        std::cout << "Result: ";
-        bool result = fa.acceptsString(input);
-        std::cout << (result ? "Accepted" : "Rejected") << std::endl;
-
-        attempts++;
-
-        if (attempts == 3) {
-            break;
-        }
-    }
+    std::cout << "Result: ";
+    bool result = fa.acceptsString(input);
+    std::cout << (result ? "Accepted" : "Rejected") << std::endl;
 
     return 0;
 }
